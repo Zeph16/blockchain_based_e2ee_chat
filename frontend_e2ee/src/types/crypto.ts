@@ -7,6 +7,5 @@ export interface CryptoState {
 export interface PrekeyBundle {
   identityKey: Uint8Array;
   signedPrekey: Uint8Array;
-  prekeySignature: Uint8Array;
 }
 

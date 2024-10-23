@@ -80,10 +80,7 @@ async function registerUser() {
 async function generatePrekeyBundle() {
   const authStore = useAuthStore();
   const identityKey = await CryptoService.GENERATE_DH();
-  const identitySigningKey = await CryptoService.convertToECDSASigning(identityKey);
   const signedPrekey = await CryptoService.GENERATE_DH();
-
-  const prekeySignature = await CryptoService.sign(identitySigningKey, await CryptoService.exportCryptoKey(signedPrekey.publicKey));
 
   if (!authStore.user) {
     router.push('/login');
@@ -94,7 +91,6 @@ async function generatePrekeyBundle() {
   authStore.setPrekeyBundle({
     identityKey,
     signedPrekey,
-    prekeySignature
   });
   steps.generatePrekeyBundle.completed = true;
   console.log('Successfully generated prekey bundle:');
@@ -117,8 +113,7 @@ async function publishPrekeyBundle() {
   try {
     await blockchain.storePrekey({
       identityKey: await CryptoService.exportCryptoKey(authStore.prekeyBundle.identityKey.publicKey),
-      signedPrekey: await CryptoService.exportCryptoKey(authStore.prekeyBundle.signedPrekey.publicKey),
-      prekeySignature: authStore.prekeyBundle.prekeySignature,
+      signedPrekey: await CryptoService.exportCryptoKey(authStore.prekeyBundle.signedPrekey.publicKey)
     });
     console.log("Successfully stored prekey");
     steps.publishPrekeyBundle.completed = true;

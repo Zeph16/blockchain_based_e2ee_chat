@@ -43,14 +43,6 @@ import api from '@/utils/api'
 
 
 
-// const privateKeyList = [
-//   "0x3b18fe24d8910b524fd35d20aefbe9fefe341f63fa96fb4dff93e31ffcf77a89",
-//   "0x18b5fbe84a69a1ba2c2749bda2a14baed21c6cc5504d3ce6b50bb02eb0baa32a",
-//   "0x0e01f76b1714510d52a4fd7cb7843ba4e0e6deadb2e948c2e92142e12836b4bb",
-//   "0x25741940576f84a8941146869e19e4757cf73c4e68dc74574b4d3a10acb21234",
-//   "0x6a5c335822980e75c48b60c00c0fa80cbb9797f0fd2492eb544cb6abc65cbf61"
-// 
-
 const privateKeyList = ref([] as string[]);
 
 const fetchPrivateKeys = async () => {

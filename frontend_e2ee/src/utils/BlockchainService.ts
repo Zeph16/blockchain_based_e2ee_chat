@@ -94,7 +94,6 @@ export class BlockchainService {
   public async storePrekey({
     identityKey,
     signedPrekey,
-    prekeySignature
   }: PrekeyBundle) {
     const contract = await this.getContract();
 
@@ -110,7 +109,6 @@ export class BlockchainService {
     const tx = await contract.storePrekey(
       identityKey,
       signedPrekey,
-      prekeySignature,
       {
         gasLimit: 6721975
       }
@@ -124,11 +122,10 @@ export class BlockchainService {
     const prekey  = await contract.getPrekey(username, { gasLimit: 6721975 });
     console.log("Fetched value from blockchain:")
     console.log(prekey);
-    const [identityKey, signedPrekey, prekeySignature] = prekey;
+    const [identityKey, signedPrekey] = prekey;
     return {
       identityKey: hexToBytes(identityKey),
-      signedPrekey: hexToBytes(signedPrekey),
-      prekeySignature: hexToBytes(prekeySignature)
+      signedPrekey: hexToBytes(signedPrekey)
     };
   }
 

@@ -22,7 +22,6 @@ contract PrekeyManagement {
     struct PrekeyBundle {
         bytes identityKey;
         bytes signedPrekey;
-        bytes prekeySignature;
     }
 
     mapping(address => PrekeyBundle) private prekeys;
@@ -48,15 +47,13 @@ contract PrekeyManagement {
 
     function storePrekey(
         bytes memory identityKey,
-        bytes memory signedPrekey,
-        bytes memory prekeySignature
+        bytes memory signedPrekey
     ) public {
         require(registeredAddresses[msg.sender], "Address not registered");
 
         PrekeyBundle memory prekeyBundle = PrekeyBundle({
             identityKey: identityKey,
-            signedPrekey: signedPrekey,
-            prekeySignature: prekeySignature
+            signedPrekey: signedPrekey
         });
 
         prekeys[msg.sender] = prekeyBundle;
@@ -78,8 +75,7 @@ contract PrekeyManagement {
 
         PrekeyBundle memory prekeyBundle = prekeys[userAddress];
         return prekeyBundle.identityKey.length > 0 && 
-               prekeyBundle.signedPrekey.length > 0 &&
-               prekeyBundle.prekeySignature.length > 0;
+               prekeyBundle.signedPrekey.length > 0;
     }
 
     function resetContract() external onlyOwner {

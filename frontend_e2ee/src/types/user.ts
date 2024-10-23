@@ -17,7 +17,6 @@ export interface AuthState {
   prekeyBundle: {
     identityKey: CryptoKeyPair;
     signedPrekey: CryptoKeyPair;
-    prekeySignature: Uint8Array;
   } | null;
 }
 

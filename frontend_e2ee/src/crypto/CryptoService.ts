@@ -5,15 +5,6 @@ export default class CryptoService {
   
   static async initializeEncryptionAsSender(senderBundle: AuthState['prekeyBundle'], receiverBundle: PrekeyBundle): Promise<Session> {
     // SELF PREKEY BUNDLE SHOULD ALREADY BE STORED
-
-    const isValid = await this.verifySignature(
-      receiverBundle.identityKey,
-      receiverBundle.signedPrekey,
-      receiverBundle.prekeySignature
-    );
-    if (!isValid) {
-      throw new Error("Prekey signature is invalid");
-    }
     const ephemeralKey = await this.GENERATE_DH();
     const SK = await this.performX3DHSender(senderBundle!.identityKey, ephemeralKey, receiverBundle.identityKey, receiverBundle.signedPrekey);
     const receiverPublicPrekey = await crypto.subtle.importKey(
