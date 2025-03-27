@@ -69,7 +69,7 @@ public class PrekeyManagement extends Contract {
 
     static {
         _addresses = new HashMap<String, String>();
-        _addresses.put("5777", "0x13C2f768e029951A3AE026F69A3C882384604242");
+        _addresses.put("5777", "0x75F7f8330f52AF6bd7497A86DBA1e32c15F4f004");
     }
 
     @Deprecated

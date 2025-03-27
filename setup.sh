@@ -75,7 +75,7 @@ if [ -z "$CONTRACT_ADDRESS" ]; then
 fi
 log_info "Contract deployed at address: $CONTRACT_ADDRESS"
 
-FIRST_PRIVATE_KEY=$(jq -r '.private_keys[0] | to_entries | .[0].value' $KEYS_FILE)
+FIRST_PRIVATE_KEY=$(jq -r '.private_keys[0] | to_entries | .[0].value' ../$KEYS_FILE)
 
 log_info "Generating Java wrappers with Web3j..."
 web3j generate truffle --truffle-json=build/contracts/$CONTRACT_JSON_FILE -o ../$BACKEND_DIR/src/main/java/ -p md.proj.encryptedchat.blockchain
@@ -110,6 +110,7 @@ cp $KEYS_FILE $FRONTEND_DIR/public/blockchain/
 
 cd $FRONTEND_DIR
 log_info "Starting the frontend application..."
+npm install
 npm run dev > ../frontend.log 2>&1 &
 FRONTEND_PID=$!
 sleep 5

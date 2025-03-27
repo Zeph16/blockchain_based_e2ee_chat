@@ -1,40 +1,122 @@
-Installation Manual blockchain_based_e2ee_chat
+# End-to-End Encrypted Chat Application
 
-1. Open Ganache and Create a New Workspace
-• Launch Ganache on your machine.
-• Create a new workspace and configure it to connect with your blockchain project.
-• In your project directory, open the truffle-config.js file. Ensure it is set up to connect to the 
-Ganache network, specifying the correct host, port, and network ID.
-2. Open and Connect with the PostgreSQL Database Server
-• Start the PostgreSQL database server on your machine.
-• Connect to your PostgreSQL database using a preferred database management tool pgAdmin 
-3. Compile and Migrate the Smart Contracts
-• In your project directory, run the following commands:
-truffle compile
-truffle migrate
-• This will compile your smart contracts and deploy them to the blockchain network configured in 
-Ganache.
-4. Replace the PrekeyManagement.json File
-• Locate the PrekeyManagement.json file in the build folder of your blockchain project.
-• Replace the existing PrekeyManagement.json file in the client/public/abi directory with the 
-newly generated one.
-5. Copy Ganache Private Keys into SignupVue.vue
-• In Ganache, locate the private keys for the accounts generated.
-• Copy one of the private keys and paste it into the SignupVue.vue file under the client directory 
-where the private key is required.
-6. Copy Contract Address and Private Key into Spring Boot Application
-• Copy the smart contract address from the deployment process.
-• Open the application.properties file in your Spring Boot project.
-• Paste the smart contract address and a private key into the appropriate properties in the 
-application.properties file.
-7. Run the Client Application
-• Navigate to the client directory and run the following command:
-npm run dev
-• This will start the Vue.js client application.
-8. Run the Spring Boot Application
-• In your Spring Boot project directory, run:
-./mvnw spring-boot:run
-• This will start the Spring Boot backend application.
-9. Test the Login Functionality
-• Open the client application in your browser.
-• Perform the login process. The login should succeed if all configurations are correctly set up
+## Overview
+
+This project is an end-to-end encrypted (E2EE) chat application implementing the Signal Protocol for secure messaging. The backend is built with Spring Boot, the frontend uses Vue.js, and Ethereum smart contracts (via a simple blockchain setup in Ganache) are used for key management.
+
+> 🚨 **Note:** This is not a production-ready implementation. It is meant for research and learning purposes only. Don't do cryptography in the browser.
+
+## Architecture
+
+- **Frontend**: Vue.js application for user interaction
+    
+- **Backend**: Spring Boot REST API
+    
+- **Blockchain**: Ethereum smart contracts deployed on Ganache for storing encryption keys
+    
+- **Encryption**: Custom implementation of the Signal Protocol in the frontend for message encryption.
+    
+
+## Setup Instructions
+
+### Prerequisites
+
+Ensure you have the following installed:
+
+- Node.js & npm
+    
+- Java 17+ & Maven
+    
+- Truffle & Ganache
+    
+- Web3j CLI
+    
+- jq (for JSON parsing in shell scripts)
+    
+- PostgreSQL Database
+
+
+    
+
+### Running the Project
+
+1. **Clone the repository:**
+    
+    ```bash
+    git clone https://github.com/Zeph16/blockchain_based_e2ee_chat
+    cd blockchain_based_e2ee_chat
+    ```
+    
+2. Configure spring boot's database connection configs in the `backend_e2ee/src/main/resources/application.properties` file to properly connect to your own database.
+    
+3. **Run the startup script:**
+    
+    ```bash
+    ./startup.sh
+    ```
+    
+    This will:
+    
+    - Start a local Ethereum blockchain (Ganache)
+        
+    - Deploy smart contracts
+        
+    - Start the Spring Boot backend
+        
+    - Start the Vue frontend
+    
+4. Pay close attention to each of the 3 log files found in the root of the directory. The startup script output by itself will not show indication of failure of the individual components.
+
+## Blockchain Integration
+
+The smart contract `PrekeyManagement` is used to store and manage encryption keys securely.
+
+- **Deployment**: Contracts are compiled and migrated using Truffle.
+    
+- **Interaction**: Web3j is used to generate Java wrappers for blockchain communication.
+    
+
+## Backend
+
+The Spring Boot backend serves as an API layer, providing authentication and encrypted message exchange. It only interacts with the blockchain to **check for prekey existence** before registering a user. The STOMP protocol is used for real time websocket interactions. 
+
+## Frontend
+
+The Vue.js frontend:
+
+- Registers and authenticates users
+    
+- Exchanges encrypted messages
+
+- Retrieves public keys from the blockchain
+
+- Handles all cryptographic operations
+
+> It contains a custom implementation of the Signal Protocol using the Web Crypto API, a stripped down version can be found at my signal protocol implementation repository [here](https://github.com/Zeph16/signal-webcrypto-ts).
+    
+
+## Logging and Debugging
+
+- **Backend logs:** `backend.log`
+    
+- **Frontend logs:** `frontend.log`
+    
+- **Blockchain logs:** `blockchain.log`
+    
+
+## Stopping the Application
+
+Press `CTRL+C` to stop all services. The startup script automatically cleans up running processes.
+
+## Future Improvements
+
+- Implement group messaging
+    
+- Optimize blockchain interactions
+    
+- Enhance the user interface and UX
+    
+
+## License
+
+This project is released under the MIT License.
